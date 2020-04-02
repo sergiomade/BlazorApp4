@@ -1,0 +1,29 @@
+﻿@page "/"
+@using BlazorApp4.Shared.Entidades
+@inject IRepositorio  Repositorio
+
+<div>
+    <h3>En Cartelera</h3>
+    <ListadoPeliculas Peliculas="EnCartelera" />
+</div>
+
+<div>
+    <h3>Próximos Extrenos</h3>
+    <ListadoPeliculas Peliculas="FuturosExtrenos" />
+</div>
+
+
+@code{
+
+    private List<Pelicula> EnCartelera;
+    private List<Pelicula> FuturosExtrenos;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var httpResponse = await Repositorio.Get<HomePageDTO>("api/peliculas");
+        FuturosExtrenos = httpResponse.Response.ProximosExtrenos;
+        EnCartelera = httpResponse.Response.PeliculasEnCartelera;
+    }
+
+
+}

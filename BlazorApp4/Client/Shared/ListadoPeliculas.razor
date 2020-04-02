@@ -1,0 +1,40 @@
+﻿
+    <div style="display: flex; flex-wrap: wrap; align-items: center;">
+        <ListadoGenerico Listado="Peliculas">
+            <HayRegistros>
+                <PeliculaIndividual pelicula="context" EliminarPelicula="EliminarPelicula" />
+            </HayRegistros>
+        </ListadoGenerico>
+    </div>
+
+<Confirmacion  @ref="confirmacion" onConfirm="EliminarPeliculaConfirmacion" onCancel="onCancelConfirmacion">
+    <div>Desea Borrar la Pelicula?</div>
+</Confirmacion>
+
+@code {
+
+    Confirmacion confirmacion;
+
+    [Parameter] public List<Pelicula> Peliculas { get; set; }
+
+    void EliminarPelicula(Pelicula pelicula)
+    {
+        confirmacion.Mostrar();
+        peliculaABorrar = pelicula;
+    }
+
+    Pelicula peliculaABorrar;
+
+    void EliminarPeliculaConfirmacion()
+    {
+        Peliculas.Remove(peliculaABorrar);
+        confirmacion.Ocultar();
+        peliculaABorrar = null;
+    }
+
+    void onCancelConfirmacion()
+    {
+        confirmacion.Ocultar();
+        peliculaABorrar = null;
+    }
+}
